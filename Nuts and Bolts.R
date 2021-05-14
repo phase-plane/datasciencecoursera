@@ -58,6 +58,7 @@ file.path("mytest3.R")
 
 # Pass 'folder1' and 'folder2' as arguments to file.path to make a
 # platform-independent pathname
+file.path("folder1", "folder2")
 
 # Create a directory in the current working directory called "testdir2"
 # and a subdirectory for it called "testdir3"

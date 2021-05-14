@@ -1,3 +1,64 @@
-print("This file was created within RStudio")
-# 
-print("And now it lives on GitHub")
+# 1. Basics
+# assign variable 
+y <- 9
+
+# built-in help
+?c
+
+# create vector
+z <- c(1.1, 9, 3)
+
+# operations applied element-wise
+z * 2 + 100
+
+# "recycled" smaller vector
+c(1,2,3,4) + c(0,10)
+
+# time-saving:
+# ^ arrow
+# type first two letter then tab
+
+#2. Workspace and file system
+
+# commands to make files OS independent
+
+getwd()
+
+# List all the objects in your local workspace
+ls()
+
+# List all the files in your working directory 
+list.files() 
+# or 
+dir()
+
+# Using the args() function on a function name to list arguments
+args()
+
+# Use dir.create() to create a director
+dir.create("testdir")
+
+# Create a file in your working directory
+file.create("mytest.R")
+
+# check if file exists in current working directory
+file.exists("mytest.R")
+
+# Access information about the file "mytest.R"
+file.info("mytest.R")
+
+# Rename file
+file.rename("mytest.R", "mytest2.R")
+
+# Make a copy of "mytest2.R" called "mytest3.R" using file.copy()
+file.copy("mytest2.R", "mytest3.R")
+
+# Provide the relative path to the file "mytest3.R" by using file.path()
+file.path("mytest3.R")
+
+# Pass 'folder1' and 'folder2' as arguments to file.path to make a
+# platform-independent pathname
+
+# | Create a directory in the current working directory called "testdir2"
+# and a subdirectory for it called "testdir3"
+dir.create(file.path("testdir2", "testdir3"), recursive = TRUE)

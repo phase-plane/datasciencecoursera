@@ -1,4 +1,7 @@
 # 1. Basics
+
+# R uses 'one-based indexing' like Matlab
+
 # assign variable 
 y <- 9
 
@@ -18,7 +21,7 @@ c(1,2,3,4) + c(0,10)
 # ^ arrow
 # type first two letter then tab
 
-#2. Workspace and file system
+# 2. Workspace and file system
 
 # commands to make files OS independent
 
@@ -64,7 +67,7 @@ file.path("folder1", "folder2")
 # and a subdirectory for it called "testdir3"
 dir.create(file.path("testdir2", "testdir3"), recursive = TRUE)
 
-#4.  Vectors (numeric or otherwise)
+# 4.  Vectors (numeric or otherwise)
 
 # logical operators 
 # A | B or 
@@ -81,7 +84,7 @@ paste()
 # Note: the numeric vector gets 'coerced' into a character
 # vector by the paste() function
 
-#5. Missing Values 
+# 5. Missing Values 
 # randomly combine vectors
 sample()
 
@@ -97,3 +100,49 @@ is.na()
 # another type of missing value - NaN
 
 # Inf stands for infinity
+
+# 6. Subsetting Vectors
+
+# index using square brackets 
+
+# Index vectors come in four different flavors 
+# logical vectors, vectors of positive integers,
+# vectors of negative integers, and vectors of character strings
+
+# logical indexing: not necessarily returning index values but extracting 
+# values given conditions
+
+# N.B. note: R doesn't prevent us from asking for invalid index values!
+
+# exclude certain elements
+x[-c(2, 10)] 
+
+# commands for name vectors 
+identical(x,y)
+
+# 7. Matrices and Data Frames 
+
+# matrices contain single class of data
+# data frames can consist of multiple classes
+
+# commands 
+dim()
+length()
+attributes()
+class()
+matrix(data = , nrow =, ncol = )
+identical()
+
+# no need for c() when using : to generate vector
+
+# combine columns 
+cbind()
+
+# to avoid implicit coercion > data frames 
+data.frame()
+
+# insert column names
+# create cnames string vector
+colnames(my_data) <- cnames
+
+

@@ -63,3 +63,37 @@ file.path("folder1", "folder2")
 # Create a directory in the current working directory called "testdir2"
 # and a subdirectory for it called "testdir3"
 dir.create(file.path("testdir2", "testdir3"), recursive = TRUE)
+
+#4.  Vectors (numeric or otherwise)
+
+# logical operators 
+# A | B or 
+# A & B and
+# !A negation
+
+# Character vectors
+
+# double quotations 
+
+# join strings contained in vector 
+paste()
+
+# Note: the numeric vector gets 'coerced' into a character
+# vector by the paste() function
+
+#5. Missing Values 
+# randomly combine vectors
+sample()
+
+# locate NAs 
+is.na()
+
+# lesson: be cautious when
+# using logical expressions anytime NAs might creep in.
+# R creates vectors of NA
+
+# sum() works on TRUE (1), FALSE (0) values 
+
+# another type of missing value - NaN
+
+# Inf stands for infinity

@@ -14,6 +14,9 @@ z <- c(1.1, 9, 3)
 # operations applied element-wise
 z * 2 + 100
 
+# concatenate strings 
+paste()
+
 # "recycled" smaller vector
 c(1,2,3,4) + c(0,10)
 
@@ -145,4 +148,95 @@ data.frame()
 # create cnames string vector
 colnames(my_data) <- cnames
 
+# 8. Logic
+# equality == 
+# inequality !=
+# negation !
+
+# && only evaluates the first element of a vector
+# || OR - same 
+
+# Note: All AND operators are evaluated before OR operators.
+
+# commands
+isTRUE()
+identical()
+
+# xor(TRUE, TRUE) evaluates to FALSE
+xor() 
+
+# functions that take logical vectors as inputs
+which() # return index values
+any()
+all()
+
+# 9. Functions 
+
+# function_name <- function(arg1, arg2){
+#	# Manipulate arguments in some way
+#	# Return a value
+# }
+
+# default arguments
+# increment <- function(number, by = 1)
+
+# Note: When you explicitly designate argument values by name,
+# the ordering of the arguments becomes unimportant
+
+# R can also partially match arguments, but proceed with caution 
+
+# commands 
+# type function name, no parentheses
+args()
+
+# Yes it's true: you can pass functions as arguments
+
+# You may be surprised to learn that you can pass a function as an argument
+# without first defining the passed function. Functions that are not named are
+# appropriately known as anonymous functions
+
+# Ellipse example
+
+# paste (..., sep = " ", collapse = NULL)
+
+# The ellipses can be used to pass on arguments to other functions that are
+# used within the function you're writing. Usually a function that has the
+# ellipses as an argument has the ellipses as the last argument.
+
+# Notice that the ellipses is the first argument, and all other arguments after
+# the ellipses have default values. This is a strict rule in R programming: all
+# arguments after an ellipses must have default values. 
+
+# Often need to "unpack" arguments from an ellipses
+# example 
+
+# add_alpha_and_beta <- function(...){
+#   # First we must capture the ellipsis inside of a list
+#   # and then assign the list to a variable. Let's name this
+#   # variable `args`.
+#
+#   args <- list(...)
+#
+#   # We're now going to assume that there are two named arguments within args
+#   # with the names `alpha` and `beta.` We can extract named arguments from
+#   # the args list by using the name of the argument and double brackets. The
+#   # `args` variable is just a regular list after all!
+#   
+#   alpha <- args[["alpha"]]
+#   beta  <- args[["beta"]]
+#
+#   # Then we return the sum of alpha and beta.
+#
+#   alpha + beta 
+# }
+#
+# Note: you can create binary operations in R
+
+# The syntax for creating new binary operators in R is unlike anything else in
+# R, but it allows you to define a new syntax for your function. I would only
+# recommend making your own binary operator if you plan on using it often!
+
+# User-defined binary operators have the following syntax:
+#      %[whatever]% 
+# where [whatever] represents any valid variable name.
 

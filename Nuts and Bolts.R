@@ -240,3 +240,18 @@ args()
 #      %[whatever]% 
 # where [whatever] represents any valid variable name.
 
+# 14. Dates and Times
+
+# 'Date' is a class
+# referenced from 1970-01-01
+unclass() # shows what the date variable looks like internally
+
+# commands
+weekdays()
+months()
+quarters()
+strptime() # converts character vectors to POSIXlt.
+
+# Note: there are a number of operations that you can perform on dates and
+# times, including arithmetic operations (+ and -) 
+# and comparisons (<, == etc.)

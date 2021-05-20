@@ -132,12 +132,13 @@ x[x > 3]
 
 # subsetting list
 
-x <- list(foo = 1:4, bar = 0.6, baz = "hello")
+x <- list(foo = 1:4, bar = c(0.6,1.4), baz = "hello")
 x[1] # returns list
 x[[1]] # returns just the sequence i.e class - integer
 x$foo # returns class - integer 
 x["bar"] 
 x[["bar"]]
+mean(x[["bar"]])
 
 # extract multiple elements
 x[c(1,3)]
@@ -161,7 +162,6 @@ x[["a", exact = FALSE]]
 x <- c(1, 2, NA, 4, NA, 5)
 missingVals <- is.na(x)
 x[!missingVals]
-
 x <- c(1, 2, NA, 4, NA, 5)
 y<- c("a", "b", NA, "d", NA, NA)
 cmp <- complete.cases(x,y)

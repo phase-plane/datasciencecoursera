@@ -6,6 +6,7 @@ pollutantmean <- function(directory, pollutant, idx = 1:332, removeNA = TRUE){
   # process files
   files <- list.files(directory)
   
+  # initialise empty data frame
   datfram <- data.frame()
   
   # read specified files and append 
@@ -16,6 +17,5 @@ pollutantmean <- function(directory, pollutant, idx = 1:332, removeNA = TRUE){
   }
   
   # calculate mean
-  
   mean(datfram[[pollutant]], na.rm = removeNA)
 }

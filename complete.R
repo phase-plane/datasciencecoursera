@@ -1,4 +1,4 @@
-completeObs <- function(directory, idx = 1:332){
+complete <- function(directory, idx = 1:332){
   # creates data frame of:
     # column 1 - file names 
     # column 2 - no. of complete observations

@@ -41,7 +41,7 @@ dir()
 # Using the args() function on a function name to list arguments
 args()
 
-# Use dir.create() to create a director
+# Use dir.create() to create a directory
 dir.create("testdir")
 
 # Create a file in your working directory
@@ -123,6 +123,50 @@ x[-c(2, 10)]
 # commands for name vectors 
 identical(x,y)
 
+x[] # returns same class, multiple elements
+x[[]] # extracts single element, may be of different class
+x$ # extract by name 
+  
+# logical indices 
+x[x > 3]
+
+# subsetting list
+
+x <- list(foo = 1:4, bar = 0.6, baz = "hello")
+x[1] # returns list
+x[[1]] # returns just the sequence i.e class - integer
+x$foo # returns class - integer 
+x["bar"] 
+x[["bar"]]
+
+# extract multiple elements
+x[c(1,3)]
+
+# when [[]] useful, $ returns null
+name <- "foo"
+x[[name]]
+
+# subsetting matrices
+x[1,] # first row (as vector)
+x[,2] # second column (as vector)
+
+# subsetted matrix elements are returned as vectors, unless drop = FALSE
+
+# Partial Matching (allowed with $, [[]])
+x <- list(aardvark = 1:5)
+x$a
+x[["a", exact = FALSE]]
+
+# Removing NA values
+x <- c(1, 2, NA, 4, NA, 5)
+missingVals <- is.na(x)
+x[!missingVals]
+
+x <- c(1, 2, NA, 4, NA, 5)
+y<- c("a", "b", NA, "d", NA, NA)
+cmp <- complete.cases(x,y)
+x[cmp] # returns [1] 1 2 4
+
 # 7. Matrices and Data Frames 
 
 # matrices contain single class of data
@@ -138,8 +182,53 @@ identical()
 
 # no need for c() when using : to generate vector
 
-# combine columns 
+# data type 
+x <- factor(c("Yes", "No"))
+
+# create list
+x <- list(1, "a", TRUE)
+
+# create matrix
+m <- matrix(nrow = 2, ncol = 3)
+attributes(m)
+
+# or
 cbind()
+rbind()
+
+# data frames => think tabular data 
+# special case of list (columns same length)
+
+# special attribute row.names
+# created by 
+read.table()
+read.csv()
+
+# recall - matrices have only ONE class, df & lists not limited
+
+# converted to matrix using (coercion applies)
+data.matrix()
+
+# name attribute (df, lists, matrices)
+x <- 1:3 
+names(x) <- c("foo", "bar", "norf")
+
+# Reading tabular data
+
+read.table() 
+read.csv()
+readLines() # text file
+source() # reading R code
+dget() # reading R code (that have been deparsed into text files)
+load() # reading binary objects into R
+unserialize() # reading binary objects into R
+
+# reading large tables
+# make a rough calculation of the memory requirements 
+
+# Textual formats
+# to read files and retain metadata 
+# dput() & dump() (multiple objects)
 
 # to avoid implicit coercion > data frames 
 data.frame()

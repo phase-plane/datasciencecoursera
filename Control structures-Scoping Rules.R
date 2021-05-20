@@ -1,17 +1,15 @@
-# Control structures and Scoping Rules
+# Control structures, Functions, Scoping Rules
 # Summary Notes (Full Notes in course textbook: R Programming)
 
 # A few e.g.s to get used to the syntax
 
 # Generate a uniform random number
 x <- runif(1, 0, 10)
-
 if (x > 3) {
   y <- 10 
 } else {
     y <- 0 
 }
-
 
 # for loop 
 for (i in 1:10) {
@@ -37,6 +35,17 @@ f <- function(num = 1){
 }
 
 # Note: R functions arguments can be matched positionally or by name
+
+# lecture example 
+
+columnmean<- function(y){
+  nc = ncol(y)
+  means = numeric(nc)
+  for (i in 1:nc){
+    means[i] <- mean(y[,i])
+  }
+  means
+}
 
 # lm() fits linear model
 args(lm)

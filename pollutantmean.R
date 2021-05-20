@@ -15,7 +15,6 @@ pollutantmean <- function(directory, pollutant, idx = 1:332, removeNA = TRUE){
     fileData <- read.csv(fileToRead)
     datfram <- rbind(datfram,fileData)
   }
-  
   # calculate mean
   mean(datfram[[pollutant]], na.rm = removeNA)
 }

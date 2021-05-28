@@ -177,3 +177,49 @@ interaction(f1,f2)
 
 split(x, list(f1,f2), drop = TRUE)
 # get rid of empty levels
+
+# Debugging
+
+# message - execution continues
+
+# warning - some is wrong but non-fatal, excecution continues
+
+# error - fatal
+
+# all 'conditions'
+
+# command 
+invisible(x)
+
+# e.g. 
+printmessage <- function(x){
+  if (x > 0)
+    print("x is greater than zero")
+  else
+    print("x is less than zero")
+  invisible(x)
+}
+# object returned but no auto-printing in console
+# 'load' function uses this
+# error if 'NA' given as input
+# rectify
+
+printmessage2 <- function(x){
+  if (is.na(x))
+    print("x is NA")
+  else if (x > 0)
+    print("x is greater than zero")
+  else
+    print("x is less than zero")
+  invisible(x)
+}
+
+# Tools / interactive methods
+
+# 1. traceback
+# 2. debug
+# 3. browser
+# 4. trace
+# 5. recover - error handler
+
+# more blunt method > print/cat statements within function

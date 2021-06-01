@@ -52,4 +52,30 @@ summaryRprof()
 # not to be used in conjunction with system.time
 # two methods for normalising data 
 by.total
-by.self # most revealing 
+by.self # most revealing
+
+# Swirl exercises Week 4
+# 12. Looking at Data
+dim(plants) # works on data frame
+nrow(plants)
+# memory
+object.size(plants)
+names(plants)
+tail(plants,15)
+
+# 13. Simulation
+flips <- sample(c(0,1), 100, replace = TRUE, prob = c(0.3, 0.7))
+rbinom(1, size = 100, prob = 0.7) # 1 observation of 100 flips
+flips2 <- rbinom(100, size = 1, prob = 0.7) # 100 observations of 1 flip
+replicate(100, rpois(5, 10)) # 100 groups of 5 obs.
+
+# 15. Base Graphics
+# advanced graphics: lattice, ggplot2, ggvis
+# plot <=> scatterplot
+plot(x = cars$speed, y = cars$dist)
+plot(x = cars$speed, y = cars$dist, xlab = "Speed", ylab = "Stopping Distance")
+# OR using formula interface
+plot(dist ~ speed, cars)
+
+# box plots
+boxplot(formula = mpg ~ cyl, data = mtcars)

@@ -23,10 +23,12 @@
 
 # sapply attempts to do this entire process for you
 
-# nice command
+# nice commands
 # sum(flags$orange)
 # lapply(flags_colors, sum)
 # lapply (object, command)
+# sapply with split
+sapply(split(mtcars$mpg, mtcars$cyl), mean)
 
 # callings (anonymous) functions as arguments (when no built-in function suitable)
 # return second item from each element of the unique_vals list
@@ -111,7 +113,8 @@ list(noise(1,1,2), noise(2,2,2), noise(3,3,2),
 # of the numeric vector is in
 
 # commands
-# > table(flags$landmass)
+table(flags$landmass)
+with(mtcars, tapply(mpg, cyl, mean))
 
 # apply the mean function to the 'animate' variable separately for each of the 
 # six landmass groups, thus giving us the proportion of flags containing 

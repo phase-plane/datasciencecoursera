@@ -22,12 +22,8 @@ rankhospital <- function(state, outcome, num = "best"){
     else if (identical(num, "worst") == TRUE){
       idx <- validIndices
     }
-    else if (as.integer(num) %in% 1:validIndices){
-      idx <- as.integer(num)
-    }
     else {
-      print(NA)
-      stop()
+      idx <- as.integer(num)
     }
     # return hospital name[,2] in state with lowest 30 day death rate
     as.character(stateData$Hospital.Name[idx])

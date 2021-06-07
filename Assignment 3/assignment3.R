@@ -2,6 +2,8 @@
 setwd("/Users/alexanderjohannes/Desktop/2021/Code/datasciencecoursera/A3Data")
 hospitalData <- read.csv("outcome-of-care-measures.csv", colClasses = "character",
                     na.strings = "Not Available", stringsAsFactors = FALSE)
+hospitalData <- read.csv("outcome-of-care-measures.csv", 
+                         na.strings = "Not Available", stringsAsFactors = FALSE)
 # getting a feel
 head(hospitalData)
 ncol(hospitalData)
@@ -34,3 +36,12 @@ TeststateData <- TeststateData[order(TeststateData$Name),]
 idx <- which.min(TeststateData$Rate)
 as.character(TeststateData$Name[idx])
 "JHB" %in% testData[,3]
+
+for(state in uniqueStates){
+  print(state)
+}
+
+for (i in 1:5){
+  if (i==3) next
+  cat(i)
+}

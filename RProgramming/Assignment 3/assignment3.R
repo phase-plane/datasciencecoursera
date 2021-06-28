@@ -1,5 +1,5 @@
 # setup
-setwd("/Users/alexanderjohannes/Desktop/2021/Code/datasciencecoursera/Assignment 3")
+setwd(paste(getwd(),"Assignment 3", sep="/"))
 hospitalData <- read.csv("outcome-of-care-measures.csv", colClasses = "character",
                     na.strings = "Not Available", stringsAsFactors = FALSE)
 hospitalData <- read.csv("outcome-of-care-measures.csv", 

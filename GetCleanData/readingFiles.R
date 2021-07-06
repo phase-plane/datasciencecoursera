@@ -69,7 +69,7 @@ dateDownloaded <- date()
 # (ii) LOCAL FLAT FILES
 
 read.table()
-# looks for 'tab' seperated files (.tab/.txt) -> need extra commands
+# looks for 'tab' separated files (.tab/.txt) -> need extra commands
 # function (file, header = FALSE, sep = "",..., row.names, nrows,..., quote,..)
 # quote = "" can be helpful
 # so for csv, could use sep = ","

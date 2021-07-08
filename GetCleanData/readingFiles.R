@@ -1,6 +1,7 @@
 setwd(paste(getwd(),"GetCleanData", sep="/"))
 
 # Week 1: Getting and Cleaning Data (Overview)
+
 # Data collection - Raw files (.csv, .xlsx), Databases (MySQL), APIs
 # formats - JSON, XML, flat files (.csv, .txt)
 # Making data tidy

@@ -1,4 +1,5 @@
 setwd(paste(getwd(),"GetCleanData", sep="/"))
+
 # Week 2: Getting Data from common data storage systems
 
 # (i) MySQL
@@ -42,6 +43,19 @@ affyMis <- fetch(query); quantile(affyMis$misMatches)
 affyMisSmall <- fetch(query,n=10); dbClearResult(query);
 dim(affyMisSmall)
 dbDisconnect(hg19)
+
+# Quiz Q2 & 3
+install.packages("curl")
+install.packages("sqldf")
+library(curl)
+library(sqldf)
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv"
+download.file(fileUrl, destfile = "./acs.csv", method = "libcurl")
+acs <- data.table::data.table(read.csv("acs.csv"))
+
+detach("package:RMySQL", unload=TRUE)
+query1 <- sqldf("select pwgtp1 from acs where AGEP < 50")
+query2 <- sqldf("select distinct AGEP from acs")
 
 # (ii) HDF5
 
@@ -106,25 +120,18 @@ html <- htmlTreeParse(url, useInternalNodes=TRUE)
 xpathSApply(html, "//title", xmlValue)
 xpathSApply(html, "//td[@id='col-citedby']", xmlValue)
 
-# GET from httr package
-install.packages("httr")
-library(httr)
-
-html2 = GET(url)
-content2 = content(html2,as="text")
-parsedHtml = htmlParse(content2,asText=TRUE)
+# HTML
+html2 <- GET(url)
+content2 <- content(html2,as="text")
+parsedHtml <- htmlParse(content2,asText=TRUE)
 xpathSApply(parsedHtml, "//title", xmlValue)
 
-# websites with passwords
-pg2 = GET("http://httpbin.org/basic-auth/user/passwd",
-          authenticate("user","passwd"))
-pg2
-names(pg2)
+# Quiz Q4
+con = url("http://biostat.jhsph.edu/~jleek/contact.html")
+htmlCode = readLines(con)
+close(con)
 
-# using handles
-google = handle("http://google.com")
-pg1 = GET(handle=google,path="/")
-pg2 = GET(handle=google,path="search")
+nchar(htmlCode[10])
 
 # (iv) APIs
 # using httr
@@ -137,11 +144,50 @@ sig = sign_oauth1.0(myapp,
 homeTL = GET("https://api.twitter.com/1.1/statuses/home_timeline.json", sig)
 # how to find the URL -> documentation of twitter API
 
-
 # convert the json object
 json1 = content(homeTL)
 json2 = jsonlite::fromJSON(toJSON(json1))
 json2[1,1:4]
+
+# GET from httr package
+install.packages("httr")
+library(httr)
+
+# Quiz Q1 
+# creating an OAuth App on github
+install.packages("httpuv")
+library(httpuv)
+library(jsonlite)
+
+oauth_endpoints("github")
+myapp <- oauth_app("github",
+                   key = "b0acad002b1fd56ecb43",
+                   secret = "6d6bae4ecf7972cbe3ca5b38cb9a6aa4310576a9",
+                   redirect_uri = "http://localhost:1410")
+
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+
+# use API
+gtoken <- config(token = github_token)
+req <- GET("https://api.github.com/users/jtleek/repos", gtoken)
+stop_for_status(req)
+content(req)
+# convert to data frame
+json1 = content(req)
+gitDF = jsonlite::fromJSON(jsonlite::toJSON(json1))
+# extract info
+gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
+
+# websites with passwords
+pg2 = GET("http://httpbin.org/basic-auth/user/passwd",
+          authenticate("user","passwd"))
+pg2
+names(pg2)
+
+# using handles
+google = handle("http://google.com")
+pg1 = GET(handle=google,path="/")
+pg2 = GET(handle=google,path="search")
 
 # (v) other Sources
 
@@ -163,4 +209,11 @@ RPostresSQL()
 RODBC()
 RMongo()
 
-# can read images & gis data
+# Quiz Q5 fixed width file
+library(curl)
+download.file(fileUrl, destfile = "./noaa.for", method = "libcurl")
+
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.for"
+lines <- readLines(fileUrl, n = 10)
+NOAA <- read.fwf(fileUrl, skip=4, widths=c(12, 7, 4, 9, 4, 9, 4, 9, 4))
+sum(NOAA[,4])

@@ -1,5 +1,6 @@
-# Week 3
-# organize, merge, manage data
+setwd(paste(getwd(),"GetCleanData", sep="/"))
+
+# Week 3: organize, merge, manage data
 
 # (i) SUBSETTING & SORTING
 # review
@@ -36,6 +37,11 @@ arrange(X,desc(var1))
 # adding rows and columns
 X$var4 <- rnorm(5)
 Y <- cbind(X,rnorm(5))
+
+# Quiz Q1:
+acs <- read.csv("IdahoHousing2006.csv")
+agricultureLogical <- acs$ACR == 3 & acs$AGS == 6
+which(agricultureLogical) # [1]  125  238  262
 
 # (ii) QUICK SUMMARY 
 restData <- read.csv("baltimoreRestaurants.csv")
@@ -153,7 +159,8 @@ head(mtcars)
 # melting data frames
 mtcars$carname <- rownames(mtcars)
 # melt -> id, measurement variables
-carMelt <- melt(mtcars,id=c("carname","gear","cyl"), measure.vars=c("mpg","hp"))
+carMelt <- melt(mtcars,id=c("carname","gear","cyl"), 
+                measure.vars=c("mpg","hp"))
 head(carMelt,3)
 tail(carMelt,n=3)
 
@@ -218,3 +225,43 @@ df2 = data.frame(id=sample(1:10),y=rnorm(10))
 df3 = data.frame(id=sample(1:10),z=rnorm(10))
 dfList = list(df1,df2,df3)
 join_all(dfList)
+
+# Quiz Q2
+install.packages("jpeg")
+library(jpeg); library(curl)
+
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fjeff.jpg"
+download.file(fileUrl, destfile = "./quizimage.jpeg", method = "libcurl")
+Q2 <- readJPEG("quizimage.jpeg", native = TRUE)
+quantile(Q2, probs = c(0.3, 0.8))
+# ans
+#       30%       80% 
+# -15259150 -10575416
+
+# Q3
+fileUrl1 <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
+fileUrl2 <- paste("https://d396qusza40orc.cloudfront.net/",
+                  "getdata%2Fdata%2FEDSTATS_Country.csv", sep = "")
+download.file(fileUrl1, destfile = "./gdp.csv", method = "libcurl")
+download.file(fileUrl2, destfile = "./edu.csv", method = "libcurl")
+
+myGDPdf <- read.csv("gdp.csv", stringsAsFactors = FALSE)
+myEDUdf <- read.csv("edu.csv", stringsAsFactors = FALSE)
+
+library(dplyr)
+gdp <- tbl_df(myGDPdf)
+rm("myGDPdf")
+
+edu <- tbl_df(myEDUdf)
+rm("myEDUdf") 
+
+# id -> CountryCode (edu), X (gdp)
+gdp <- rename(gdp, CountryCode = X)
+merged <- merge(edu, gdp, by = "CountryCode")
+packsum <- summarise(merged, unique = n_distinct(CountryCode))
+
+merged %>% group_by(`Income Group`) %>%
+  filter("High income: OECD" %in% `Income Group` 
+         | "High income: nonOECD" %in% `Income Group`) %>%
+  summarize(Average = mean(Rank, na.rm = T)) %>%
+  arrange(desc(`Income Group`))

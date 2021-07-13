@@ -5,8 +5,9 @@ any transformations or work performed to clean up the data.
 
 ### The Data
 
-Original source and description found here: \[UCI Repository\]
-(<http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones>)
+Original source and description found here: [UCI
+Repository](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
+
 from UCI description:
 
 Group of n = 30, age bracket of 19-48 years.

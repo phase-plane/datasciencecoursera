@@ -158,3 +158,5 @@ dim(InsectSprays)
 names(InsectSprays)
 range(Bdata$count)
 sample(group)
+
+# code used in project:

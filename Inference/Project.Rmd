@@ -1,0 +1,71 @@
+---
+output: pdf_document
+---
+# Statistical Inference: Week 4 Project
+
+Author: Alexander Johannes
+
+Date: 10 August 2021
+
+Link to my Statistical Inference repository: [My Repository](https://github.com/phase-plane/datasciencecoursera/tree/master/Inference)
+
+## Overview
+
+This report details the process of carrying out a simulation using the exponential distribution and performing some basic statistical analysis on the `ToothGrowth` data set. 
+
+## Part I: Simulation Exercise
+
+First, we define some useful variables and a plotting library. 
+```{r}
+lambda <- .2
+samples <- 40
+simulations <- 1000
+set.seed(7)
+library(ggplot2)
+```
+Next, let's take a sample of 40 exponential distributions of `rate = lambda`, using 1000 simulations, in order to determine the sampling distribution of the mean.
+```{r}
+simulatedData <- replicate(simulations, rexp(samples, rate = lambda))
+```
+So, we have a 40 x 1000 matrix containing our simulated data.
+Let's compute the mean of the sampling distribution and its variability: 
+```{r}
+meansData <- apply(simulatedData, 2, mean)
+sampleMean <- mean(meansData)
+sampleMean
+theoreticalMean <- 1/lambda
+
+sampleVar <- var(meansData)
+sampleVar
+theoreticalVar <- (1/lambda)^2 / samples
+```
+Visualizing our results yield:
+```{r, echo=FALSE}
+hist(meansData, col="purple", main="Histogram of 1000 means of 40 sample exponentials",
+     xlab="Sample Mean", ylab="Frequency")
+abline(v=sampleMean, col="green", lwd=6, lty=2);
+abline(v=theoreticalMean, col="red", lwd=3)
+```
+Clearly, the sample mean (4.98) and theoretical mean (5) from the simulated exponential distributions are approximately equal.
+
+The sample variance is .58, with the theoretical variance being .625. We expect some variability in our random sample and these values are still fairly similar.
+
+Finally, let's visualize the sampling distribution.
+```{r, echo=FALSE}
+xfit <- seq(min(meansData), max(meansData), length=100)
+yfit <- dnorm(xfit, mean=1/lambda, sd=((1/lambda)/sqrt(samples)))
+hist(meansData,breaks=samples,prob=T,col="orange",xlab = "sample means",main="Distribution of the sample mean",ylab="Density")
+lines(xfit, yfit, pch=22, col="black", lty=5)
+lines(abline(v=theoreticalMean, col="blue", lwd=3))
+```
+Due to the Central Limit theorem, we see that the distribution of the sample mean is approximately normal. The bell-shaped curve superimposed on the histogram illustrates how the distribution roughly resembles the density function of a normal random variable, centered around the mean (5).
+
+## Part II: Basic Inferential Data Analysis
+
+a) Load the ToothGrowth data and perform some basic exploratory data analyses
+
+b) provide a basic summary of the data
+
+c) Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose
+
+d) State your conclusions and the assumptions needed for your conclusions

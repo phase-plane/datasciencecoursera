@@ -1,0 +1,77 @@
+---
+output: pdf_document
+urlcolor: blue
+---
+# Statistical Inference: Week 4 Project: Part II
+
+Author: Alexander Johannes
+
+Date: 10 August 2021
+
+Link to my Statistical Inference repository: [My Repo](https://github.com/phase-plane/datasciencecoursera/tree/master/Inference)
+
+## Overview
+
+This report details the process of performing some basic statistical analysis on the `ToothGrowth` data set.
+
+## Part II: Basic Inferential Data Analysis
+
+### Step 1: Loading the data and performing some basic analysis:
+
+```{r}
+data(ToothGrowth)
+head(ToothGrowth)
+names(ToothGrowth)
+tapply(ToothGrowth$len, ToothGrowth$supp, mean)
+```
+
+### Step 2: A basic summary of the data, with a visualization:
+
+```{r, echo=FALSE}
+summary(ToothGrowth)
+Length <- ToothGrowth$len
+Supplement <- ToothGrowth$supp
+boxplot(Length~Supplement, data = ToothGrowth, 
+        main = "Summary Statistics", col = c("red", "grey"), 
+        horizontal = TRUE)
+```
+
+### Step 3:  Hypothesis tests (t-test) to compare tooth growth by supp and dose
+
+```{r, echo=FALSE}
+Dose05 <- t.test(len ~ supp, 
+              data = rbind(ToothGrowth[(ToothGrowth$dose == 0.5) & 
+                                         (ToothGrowth$supp == "OJ"),],
+                           ToothGrowth[(ToothGrowth$dose == 0.5) & 
+                                         (ToothGrowth$supp == "VC"),]), 
+              var.equal = FALSE)
+
+Dose1 <- t.test(len ~ supp, 
+             data = rbind(ToothGrowth[(ToothGrowth$dose == 1) & 
+                                        (ToothGrowth$supp == "OJ"),],
+                          ToothGrowth[(ToothGrowth$dose == 1) & 
+                                        (ToothGrowth$supp == "VC"),]), 
+             var.equal = FALSE)
+
+Dose2 <- t.test(len ~ supp, 
+             data = rbind(ToothGrowth[(ToothGrowth$dose == 2) & 
+                                        (ToothGrowth$supp == "OJ"),],
+                          ToothGrowth[(ToothGrowth$dose == 2) & 
+                                        (ToothGrowth$supp == "VC"),]), 
+             var.equal = FALSE)
+
+
+results <- data.frame(
+  "p-value" = c(Dose05$p.value, Dose1$p.value, Dose2$p.value),
+  "Conf.Low" = c(Dose05$conf.int[1],Dose1$conf.int[1], Dose2$conf.int[1]),
+  "Conf.High" = c(Dose05$conf.int[2],Dose1$conf.int[2], Dose2$conf.int[2]),
+  row.names = c("Dosage 0.5","Dosage 1","Dosage 2"))
+
+results
+```
+
+### Step 4: Conclusions and Assumptions
+
+We reject the null hypothesis for a dosage of .5 and 1, meaning there is a difference in tooth growth by delivery method (at the .05 significance level). 
+
+We have performed our t-test under the assumption of unequal variances.

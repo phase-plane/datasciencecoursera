@@ -160,3 +160,46 @@ range(Bdata$count)
 sample(group)
 
 # code used in project:
+data(ToothGrowth)
+head(ToothGrowth)
+names(ToothGrowth)
+
+Length <- ToothGrowth$len
+Supplement <- ToothGrowth$supp
+
+summary(ToothGrowth)
+boxplot(Length~Supplement, data = ToothGrowth, 
+        main = "Summary Statistics", col = c("red", "grey"), 
+        horizontal = TRUE)
+tapply(Length, Supplement, mean)
+
+
+Dose05 <- t.test(len ~ supp, 
+              data = rbind(ToothGrowth[(ToothGrowth$dose == 0.5) & 
+                                         (ToothGrowth$supp == "OJ"),],
+                           ToothGrowth[(ToothGrowth$dose == 0.5) & 
+                                         (ToothGrowth$supp == "VC"),]), 
+              var.equal = FALSE)
+
+Dose1 <- t.test(len ~ supp, 
+             data = rbind(ToothGrowth[(ToothGrowth$dose == 1) & 
+                                        (ToothGrowth$supp == "OJ"),],
+                          ToothGrowth[(ToothGrowth$dose == 1) & 
+                                        (ToothGrowth$supp == "VC"),]), 
+             var.equal = FALSE)
+
+Dose2 <- t.test(len ~ supp, 
+             data = rbind(ToothGrowth[(ToothGrowth$dose == 2) & 
+                                        (ToothGrowth$supp == "OJ"),],
+                          ToothGrowth[(ToothGrowth$dose == 2) & 
+                                        (ToothGrowth$supp == "VC"),]), 
+             var.equal = FALSE)
+
+
+results <- data.frame(
+  "p-value" = c(Dose05$p.value, Dose1$p.value, Dose2$p.value),
+  "Conf.Low" = c(Dose05$conf.int[1],Dose1$conf.int[1], Dose2$conf.int[1]),
+  "Conf.High" = c(Dose05$conf.int[2],Dose1$conf.int[2], Dose2$conf.int[2]),
+  row.names = c("Dosage 0.5","Dosage 1","Dosage 2"))
+
+results

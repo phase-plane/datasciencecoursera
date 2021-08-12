@@ -1,5 +1,6 @@
 ---
 output: pdf_document
+urlcolor: blue
 ---
 # Statistical Inference: Week 4 Project
 
@@ -7,7 +8,7 @@ Author: Alexander Johannes
 
 Date: 10 August 2021
 
-Link to my Statistical Inference repository: [My Repository](https://github.com/phase-plane/datasciencecoursera/tree/master/Inference)
+Link to my Statistical Inference repository: [My Repo](https://github.com/phase-plane/datasciencecoursera/tree/master/Inference)
 
 ## Overview
 
@@ -15,7 +16,8 @@ This report details the process of carrying out a simulation using the exponenti
 
 ## Part I: Simulation Exercise
 
-First, we define some useful variables and a plotting library. 
+First, we define some useful variables and load a plotting library. 
+
 ```{r}
 lambda <- .2
 samples <- 40
@@ -23,12 +25,17 @@ simulations <- 1000
 set.seed(7)
 library(ggplot2)
 ```
+
 Next, let's take a sample of 40 exponential distributions of `rate = lambda`, using 1000 simulations, in order to determine the sampling distribution of the mean.
+
+
 ```{r}
 simulatedData <- replicate(simulations, rexp(samples, rate = lambda))
 ```
+
 So, we have a 40 x 1000 matrix containing our simulated data.
 Let's compute the mean of the sampling distribution and its variability: 
+
 ```{r}
 meansData <- apply(simulatedData, 2, mean)
 sampleMean <- mean(meansData)
@@ -40,17 +47,20 @@ sampleVar
 theoreticalVar <- (1/lambda)^2 / samples
 ```
 Visualizing our results yield:
+
 ```{r, echo=FALSE}
 hist(meansData, col="purple", main="Histogram of 1000 means of 40 sample exponentials",
      xlab="Sample Mean", ylab="Frequency")
 abline(v=sampleMean, col="green", lwd=6, lty=2);
 abline(v=theoreticalMean, col="red", lwd=3)
 ```
+
 Clearly, the sample mean (4.98) and theoretical mean (5) from the simulated exponential distributions are approximately equal.
 
 The sample variance is .58, with the theoretical variance being .625. We expect some variability in our random sample and these values are still fairly similar.
 
 Finally, let's visualize the sampling distribution.
+
 ```{r, echo=FALSE}
 xfit <- seq(min(meansData), max(meansData), length=100)
 yfit <- dnorm(xfit, mean=1/lambda, sd=((1/lambda)/sqrt(samples)))
@@ -58,14 +68,69 @@ hist(meansData,breaks=samples,prob=T,col="orange",xlab = "sample means",main="Di
 lines(xfit, yfit, pch=22, col="black", lty=5)
 lines(abline(v=theoreticalMean, col="blue", lwd=3))
 ```
+
 Due to the Central Limit theorem, we see that the distribution of the sample mean is approximately normal. The bell-shaped curve superimposed on the histogram illustrates how the distribution roughly resembles the density function of a normal random variable, centered around the mean (5).
 
 ## Part II: Basic Inferential Data Analysis
 
-a) Load the ToothGrowth data and perform some basic exploratory data analyses
+### Step 1: Loading the data and performing some basic analysis:
 
-b) provide a basic summary of the data
+```{r}
+data(ToothGrowth)
+head(ToothGrowth)
+names(ToothGrowth)
+tapply(ToothGrowth$len, ToothGrowth$supp, mean)
+```
 
-c) Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose
 
-d) State your conclusions and the assumptions needed for your conclusions
+
+### Step 2: A basic summary of the data, with a visualization:
+
+```{r, echo=FALSE}
+summary(ToothGrowth)
+Length <- ToothGrowth$len
+Supplement <- ToothGrowth$supp
+boxplot(Length~Supplement, data = ToothGrowth, 
+        main = "Summary Statistics", col = c("red", "grey"), 
+        horizontal = TRUE)
+```
+
+### Step 3:  Hypothesis tests (t-test) to compare tooth growth by supp and dose
+
+```{r, echo=FALSE}
+Dose05 <- t.test(len ~ supp, 
+              data = rbind(ToothGrowth[(ToothGrowth$dose == 0.5) & 
+                                         (ToothGrowth$supp == "OJ"),],
+                           ToothGrowth[(ToothGrowth$dose == 0.5) & 
+                                         (ToothGrowth$supp == "VC"),]), 
+              var.equal = FALSE)
+
+Dose1 <- t.test(len ~ supp, 
+             data = rbind(ToothGrowth[(ToothGrowth$dose == 1) & 
+                                        (ToothGrowth$supp == "OJ"),],
+                          ToothGrowth[(ToothGrowth$dose == 1) & 
+                                        (ToothGrowth$supp == "VC"),]), 
+             var.equal = FALSE)
+
+Dose2 <- t.test(len ~ supp, 
+             data = rbind(ToothGrowth[(ToothGrowth$dose == 2) & 
+                                        (ToothGrowth$supp == "OJ"),],
+                          ToothGrowth[(ToothGrowth$dose == 2) & 
+                                        (ToothGrowth$supp == "VC"),]), 
+             var.equal = FALSE)
+
+
+results <- data.frame(
+  "p-value" = c(Dose05$p.value, Dose1$p.value, Dose2$p.value),
+  "Conf.Low" = c(Dose05$conf.int[1],Dose1$conf.int[1], Dose2$conf.int[1]),
+  "Conf.High" = c(Dose05$conf.int[2],Dose1$conf.int[2], Dose2$conf.int[2]),
+  row.names = c("Dosage 0.5","Dosage 1","Dosage 2"))
+
+results
+```
+
+### Step 4: Conclusions and Assumptions
+
+We reject the null hypothesis for a dosage of .5 and 1, meaning there is a difference in tooth growth by delivery method (at the .05 significance level). 
+
+We have performed our t-test under the assumption of unequal variances.

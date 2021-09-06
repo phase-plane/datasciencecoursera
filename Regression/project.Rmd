@@ -1,0 +1,80 @@
+---
+output: pdf_document
+---
+# Regression Models: Week 4 Project
+
+Author: Alexander Johannes
+
+Date: 6 September 2021
+
+## Execuctive Summary
+
+This report explores the following two points using the `mtcars` dataset from base R:
+
+a) “Is an automatic or manual transmission better for MPG?”; and
+b) "Quantify the MPG difference between automatic and manual transmissions"
+
+The analysis was conducted using several regression models and suggests that we can be confident that manual transmission is better for MPG based on this dataset.
+
+## Part I: Automatic vs Manual Transmission
+
+First, we load the dataset and conduct some basic exploratory analysis.
+
+```{r}
+data("mtcars")
+str(mtcars)
+```  
+  
+Next, we explore the transmission factor variable `am`:
+
+```{r, echo=FALSE}
+mtcars1 <- mtcars
+mtcars1$Transmission <- as.factor(mtcars1$am)
+levels(mtcars1$Transmission) <- c ("Auto", "Manual")
+plot(mtcars1$Transmission, mtcars1$mpg, main = "Car Mileage-Auto vs Manual Transmission", xlab ="Transmission", ylab = "Mileage")
+```
+
+Consequently, our initial conclusion to part a) is that a car with manual transmission does have better fuel consumption. Now, we need to quantify the extent to which we believe this to be the case.
+
+To do this, we fit a series of regression models and conduct a rudimentary process of model selection.
+
+```{r}
+fit1 <- lm(mpg ~ factor(am)-1, data = mtcars)
+summary(fit1)$coef
+```
+
+This model indicates that mileage (mpg) increases with both transmission types, but that manual has the more pronounced benefit. The p values associated with both factors are below the .05 significance level, so we have a strong degree of belief that this is the case.
+
+Next, we generate the correlation matrix of non-factor variables to get of a sense of how the variables interact, and which variables might be worth including in another model. 
+
+```{r}
+my_data <- mtcars[, c(1,3,4,5,6,7)]
+corrMat <- cor(my_data)
+round(corrMat, 2)
+```
+
+Analyzing this matrix, we conclude that a model using horsepower and weight could be more significant.
+
+We generate this model and conduct a significance test. 
+
+```{r, echo=FALSE}
+fit2<- lm(mpg ~ hp + wt+ factor(am)-1, data = mtcars)
+anova(fit1, fit2)
+```
+We see that this model is indeed more significant. 
+
+Finally, let us explore the residual plots of both the fitted models.
+
+```{r, echo=FALSE}
+fit1.res <- resid(fit1)
+plot(fitted(fit1), fit1.res, xlab = "Model 1", ylab = "Residual")
+abline(0,0)
+
+fit2.res <- resid(fit2)
+plot(fitted(fit2), fit2.res, xlab = "Model 2", ylab = "Residual")
+abline(0,0)
+```
+
+These plots both indicate that the residuals are approximately normal with mean 0 and constant variance, hence we are not concerned.
+
+We therefore stick by our conclusions with confidence, given the test statistics we generated earlier in the analysis.
